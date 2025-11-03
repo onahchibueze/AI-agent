@@ -4,7 +4,7 @@ import { LibSQLStore } from "@mastra/libsql";
 import { budgetTool } from "../tools/budget-tool";
 
 export const budgetAgent = new Agent({
-  name: "Budget Planner",
+  name: "budgetAgent",
   instructions: `
     You are a helpful budget assistant that helps users plan and save money.
 

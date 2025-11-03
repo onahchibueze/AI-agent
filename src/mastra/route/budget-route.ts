@@ -1,4 +1,3 @@
-// routes/budget-agent-route.ts
 import { registerApiRoute } from "@mastra/core/server";
 import { randomUUID } from "node:crypto";
 
@@ -6,12 +5,15 @@ export const budgetAgentRoute = registerApiRoute("/a2a/agent/:agentId", {
   method: "POST",
   handler: async (c) => {
     try {
+      // Get Mastra instance from context
       const mastra = c.get("mastra");
-      const agentId = c.req.param("agentId");
+      const agentId = c.req.param("agentId"); // Agent ID from URL
 
+      // Parse JSON-RPC 2.0 request body
       const body = await c.req.json();
       const { jsonrpc, id: requestId, params } = body;
 
+      // Validate JSON-RPC 2.0
       if (jsonrpc !== "2.0" || !requestId) {
         return c.json(
           {
@@ -27,7 +29,6 @@ export const budgetAgentRoute = registerApiRoute("/a2a/agent/:agentId", {
         );
       }
 
-      // Get agent
       const agent = mastra.getAgent(agentId);
       if (!agent) {
         return c.json(
@@ -77,7 +78,6 @@ export const budgetAgentRoute = registerApiRoute("/a2a/agent/:agentId", {
         });
       }
 
-      // Build conversation history
       const history = [
         ...messagesList.map((msg) => ({
           kind: "message",
