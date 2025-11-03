@@ -1,0 +1,25 @@
+import { Mastra } from "@mastra/core/mastra";
+import { PinoLogger } from "@mastra/loggers";
+import { LibSQLStore } from "@mastra/libsql";
+
+import { budgetAgent } from "./agents/budget-agent";
+import { budgetAgentRoute } from "./route/budget-route";
+
+export const mastra = new Mastra({
+  agents: { budgetAgent },
+  storage: new LibSQLStore({ url: ":memory:" }),
+  logger: new PinoLogger({
+    name: "Mastra",
+    level: "debug",
+  }),
+  observability: {
+    default: { enabled: true },
+  },
+  server: {
+    build: {
+      openAPIDocs: true,
+      swaggerUI: true,
+    },
+    apiRoutes: [budgetAgentRoute],
+  },
+});
